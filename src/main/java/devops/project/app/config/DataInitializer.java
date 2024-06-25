@@ -41,7 +41,7 @@ public class DataInitializer {
         for (int i = 1; i < 11; i++) {
             this.service.create(
                     "Employee: " + i,
-                    "employee." + i + "@wp.finki.ukim.mk",
+                    "employee." + i + "@savo.kostadionov@gmail.com",
                     "emp" + i,
                     this.randomizeEventType(i),
                     Stream.of(skills.get((i - 1) % 5).getId(), skills.get((i + 1) % 5).getId()).collect(Collectors.toList()),
