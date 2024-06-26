@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: project-config
+  namespace: devopsproject
+data:
+  POSTGRES_URL: "jdbc:postgresql://db:5432/postgres"
+  POSTGRES_DATABASE: "postgres"
+  POSTGRES_USER: "postgres"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: project-secret
+  namespace: devopsproject
+type: Opaque
+data:
+  password: YWRtaW4=
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  namespace: devopsproject
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devopsproject
+  template:
+    metadata:
+      labels:
+        app: devopsproject
+    spec:
+      containers:
+        - name: devopsproject
+          image: savokostadinov/devopsproject:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: project-config
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: project-secret
+                  key: password
