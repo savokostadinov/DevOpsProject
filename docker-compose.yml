@@ -2,8 +2,11 @@ version: '3.8'
 
 services:
   app:
-    image: savokostadinov/devops-project-app:latest
+    build:
+      context: .
     container_name: devops-project-app
+    ports:
+      - "8080:80"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
