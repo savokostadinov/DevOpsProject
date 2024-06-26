@@ -22,7 +22,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKENN }}
       -
-        name: Build and push
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build and package with Maven
+        run: mvn clean install
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: target/*.jar
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
